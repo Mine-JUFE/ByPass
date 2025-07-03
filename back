@@ -1,0 +1,16 @@
+  map $http_x_http_method_override $override_method {
+    default $http_x_http_method_override;
+    ""      $request_method;
+  }
+
+  server {
+    listen port;
+    server_name your-domain.com;
+    location / {
+      proxy_pass http://abab; 
+      proxy_method $override_method;    
+      proxy_set_header X-Original-Method $request_method;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+    }
+  }
