@@ -1,12 +1,16 @@
-  map $http_x_http_method_override $override_method {
+# 具体使用方法请稍微学习一下nginx的设置
+map $http_x_http_method_override $override_method {
     default $http_x_http_method_override;
     ""      $request_method;
   }
 
   server {
+    # port改成自己需要监听的端口
     listen port;
+    # your-domain.com改成你自己的域名
     server_name your-domain.com;
     location / {
+      #proxy_pass后面参数应为你的后端URL
       proxy_pass http://abab; 
       proxy_method $override_method;    
       proxy_set_header X-Original-Method $request_method;
